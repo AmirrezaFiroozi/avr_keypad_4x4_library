@@ -27,7 +27,7 @@
 #include "uart.h"
 #include "keypad_4x4.h"
 
-static FILE mystd_uart = FDEV_SETUP_STREAM(uart_putchar, uart_getchar , _FDEV_SETUP_READ);
+static FILE mystd_uart = FDEV_SETUP_STREAM(uart_putchar, uart_getchar , _FDEV_SETUP_RW);
 
 void invoke_sleep(void){
     // Invoking the sleep here
