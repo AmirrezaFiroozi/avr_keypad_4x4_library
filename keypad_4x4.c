@@ -28,6 +28,9 @@
 volatile uint8_t key_samples[SAMPLE_COUNT];
 volatile uint8_t pressed_key = NO_KEY_PRESSED;
 
+// change 16 here if the library grows to support keypads other than 4x4
+const uint8_t keypad_font[16] PROGMEM = KEYPAD_LAYOUT;
+
 /*
  *  This flag is set when a valid pressed button is released
  *  When using keypad_getKey(), this flag is automatically cleared
@@ -38,9 +41,21 @@ volatile bool is_button_released = false; // is set when a valid button is relea
 volatile bool is_button_down = false;
 
 /*
+ * receives a key_code and returns keypad_font[key_code]
+ */ 
+uint8_t keypad_translateKey(uint8_t key_code);
+
+/*
+ * gets a key and returns keypad_font[key]
+ */
+uint8_t keypad_getc(void);
+
+/*
  * Returns debounced key
  * If there is no new key, it returns NO_KEY_PRESSED
  * It automagically resets the is_button_released to false to allow pickup of new keys.
+ * This function consumes the key it detects!
+ * It means that consecutive calls to this function will have different results! (if the same key is not pressed multiple times...)
  *
  */
 uint8_t keypad_getKey(void);
@@ -80,6 +95,18 @@ void keypad_init(void){
 
 inline bool keypad_isNewKeyAvailable(void){
     return is_button_released;
+}
+
+inline uint8_t keypad_translateKey(uint8_t key_code){
+    return pgm_read_byte(&keypad_font[key_code]);
+}
+
+uint8_t keypad_getc(void){
+    uint8_t key = keypad_getKey();
+    if ( key != NO_KEY_PRESSED){
+        return pgm_read_byte(&keypad_font[key]);
+    }
+    return NO_KEY_PRESSED_CHAR; 
 }
 
 uint8_t keypad_getKey(void){

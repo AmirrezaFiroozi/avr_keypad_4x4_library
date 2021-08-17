@@ -66,10 +66,39 @@ int main(void)
     sei();
 
     for(;;){
+        /*
+         * How to use the keypad_4x4 library:
+         * Check for a new key:
+         * if(keypad_isNewKeyAvailable()){
+         *   // place EITHER keypad_getc() OR keypad_getKey() here.
+         *   // Do stuff with your key...
+         *   }
+         *
+         *   keypad_getKey() returns the key code (0<= key_code <= 15)
+         *   Keypad_getc() returns the character corresponding to that key from keypad_font[] array
+         *
+         *   keypad_getKey() and keypad_getc() consume the pressed key
+         *   if you place one after the other the second call will contain NO_KEY_PRESSED or NO_KEY_PRESSED_CHAR
+         *
+         *   // suppose the user presses the 6th key
+         *   if (keypad_isNewKeyAvailable()){
+         *      uint8_t key = keypad_getKey(); // contains 5
+         *      uint8_t key_char = keypad_getc(); // contains NO_KEY_PRESSED_CHAR !
+         *   }
+         *
+         *   // To avoid the above situation you should use keypad_translateKey()
+         *   if (keypad_isNewKeyAvailable()){
+         *      uint8_t key = keypad_getKey(); // contains 5
+         *      uint8_t key_char = keypad_translateKey(key); // contains keypad_font[5]
+         *   }
+         *
+         *
+         */
 
         if (keypad_isNewKeyAvailable()){
+            // this returns the key code not the character!
             uint8_t key = keypad_getKey();
-            printf_P(PSTR("Key: %" PRIu8 "\n"), key);
+            printf_P(PSTR("Key Code: %" PRIu8 " Key Char: %c \n"), key, keypad_translateKey(key));
         }
         invoke_sleep();
     }

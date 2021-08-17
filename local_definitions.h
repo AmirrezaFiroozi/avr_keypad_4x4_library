@@ -3,6 +3,17 @@
 
 /* Customize your keypad settings here*/
 
+/*
+ * Valid values for KEYPAD_LAYOUT are KEYPAD_GENERIC_LAYOUT, KEYPAD_CALC_LAYOUT or:
+ * The trailing backslashes are mandatory!
+ * {'', '', '', '', \
+ *  '', '', '', '', \
+ *  '', '', '', '', \
+ *  '', '', '', ''}
+ *
+ */
+#define KEYPAD_LAYOUT KEYPAD_GENERIC_LAYOUT 
+
 #define KEYPAD_DDR DDRA
 #define KEYPAD_PORT PORTA
 #define KEYPAD_PIN PINA

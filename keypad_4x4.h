@@ -25,6 +25,29 @@
 
 /* AVOID editing this file directly. Define your MACROs in local_definitions.h instead */
 
+#ifndef NO_KEY_PRESSED_CHAR
+/* keypad_getc() will return this char when the key is NO_KEY_PRESSED */
+#define NO_KEY_PRESSED_CHAR '^'
+#endif
+
+#ifndef KEYPAD_LAYOUT
+#define KEYPAD_LAYOUT KEYPAD_GENERIC_LAYOUT 
+#endif
+
+//remember to put backslashes at the end of each line except the last
+//to indicate that the macro is more than one line
+//Beware that each element HOLDS ONLY ONE CHAR so doing the following is wrong!!: 'F1'
+#define KEYPAD_CALC_LAYOUT {'7', '8', '9', '/', \
+                            '4', '5', '6', '*', \
+                            '1', '2', '3', '-', \
+                            'C', '0', '=', '+'}
+
+#define KEYPAD_GENERIC_LAYOUT {'7', '8', '9', 'A', \
+                               '4', '5', '6', 'B', \
+                               '1', '2', '3', 'C', \
+                               '*', '0', '#', 'D'}
+ 
+
 #ifndef SAMPLE_COUNT
 /*
  * Resolution or the number of samples taken
@@ -73,6 +96,8 @@
  */
 #define NO_KEY_PRESSED 127
 
+uint8_t keypad_translateKey(uint8_t key_code);
+uint8_t keypad_getc(void);
 uint8_t keypad_read(void);
 uint8_t keypad_getKey(void);
 bool keypad_isNewKeyAvailable(void);
@@ -80,3 +105,4 @@ void keypad_debounce(void);
 void keypad_init(void);
 
 #endif
+
